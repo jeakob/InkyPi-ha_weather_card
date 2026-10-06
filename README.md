@@ -6,7 +6,7 @@ It reads the weather entity (and optional per-stat sensors) from the Home Assist
 
 ## Screenshot
 
-![HA Weather Card on an 800x480 display](./example.png)
+![HA Weather Card on an 800x480 display](./screenshot-en.png)
 
 ## What it shows
 
