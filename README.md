@@ -1,4 +1,4 @@
-# InkyPi-ha_weather_card
+# InkyPi Home Assistant Plugin
 
 *HA Weather Card* is a plugin for [InkyPi](https://github.com/fatihak/InkyPi) that draws an e-ink weather card from a Home Assistant weather entity.
 
