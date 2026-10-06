@@ -1,0 +1,159 @@
+/* Establish a full-height chain so the card fills the panel (the base does not).
+   The base body adds margin/padding that breaks height:100% and shrinks the card;
+   zero them here and let the card own its padding. */
+html, body { height: 100%; }
+body { margin: 0 !important; padding: 0 !important; }
+.container { height: 100%; align-items: stretch !important; }
+
+.eink-weather-card {
+  /* Fixed positioning + an explicit pixel height (set inline from the panel size) is the
+     only combination that gives a definite height here: the base document has no doctype
+     (quirks mode), so height:100% / vh collapse to content height and flex/grid can't
+     distribute. With this, the bottom forecast pins reliably to the card's lower edge. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--text-color, #000);
+  font-family: 'Jost', sans-serif;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 18px 12px;
+}
+
+/* The forecast is pinned to the bottom; the spare vertical space between the current
+   conditions (top) and the forecast is left empty, so a taller forecast simply grows
+   upward into it. */
+.bottom {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.forecast { display: flex; flex-direction: column; }
+.chart-container { position: relative; width: 100%; overflow: hidden; }
+
+/* Forecast + summary are anchored to the bottom; spare space sits above them, so
+   enlarging the forecast grows it upward (chart/precip get more room) rather than
+   squeezing it. The chart height comes from sizes.chart_height (scales with the
+   forecast size). */
+.forecast { display: flex; flex-direction: column; }
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 3px solid var(--text-color, #000);
+  padding-bottom: 6px;
+}
+
+.header .title { font-weight: var(--fw-strong, 700); flex-shrink: 0; white-space: nowrap; }
+.header .clock { flex-shrink: 0; white-space: nowrap; margin-left: auto; }
+
+.clock {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-weight: var(--fw-regular, 500);
+}
+
+.clock .clock-time { font-weight: var(--fw-strong, 700); }
+
+/* Custom text sits in the header between the title and the date, taking the middle
+   space. JS shrinks it to fit and hides it when there is no room (the calendar/date
+   keep their space). */
+.header .custom-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.condition-icon {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.temp { font-weight: var(--fw-strong, 700); line-height: 1; flex-shrink: 0; }
+.temp-unit { font-size: 0.45em; font-weight: var(--fw-regular, 500); vertical-align: top; }
+
+/* Condition / feels-like / description stack beside the temperature and take the
+   space up to the attributes (which stay pinned right via margin-left:auto). */
+.conditions {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding-left: 4px;
+}
+
+.condition { font-weight: var(--fw-strong, 700); line-height: 1.1; }
+.feels-like { font-weight: var(--fw-regular, 500); opacity: 0.85; }
+.description { font-weight: var(--fw-regular, 500); opacity: 0.85; }
+
+.attributes {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.attribute { display: flex; align-items: center; gap: 8px; }
+.attribute-icon { width: 26px; height: 26px; }
+.attribute-label {
+  font-size: 0.72em;
+  font-weight: var(--fw-regular, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
+.attribute-value { font-weight: var(--fw-strong, 700); line-height: 1.1; }
+
+.forecast-icons { display: flex; width: 100%; flex-shrink: 0; }
+.forecast-icon-cell { display: flex; justify-content: center; }
+.forecast-icon-cell img { width: 36px; height: 36px; }
+
+.chart-container { position: relative; width: 100%; overflow: hidden; }
+.chart-container canvas { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; }
+
+.daily-forecast {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding-top: 6px;
+  border-top: 2px solid var(--text-color, #000);
+}
+
+.daily-cell { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.daily-day { font-weight: var(--fw-strong, 700); }
+.daily-temps { display: flex; gap: 8px; }
+.daily-high { font-weight: var(--fw-strong, 700); }
+.daily-low { font-weight: var(--fw-regular, 500); opacity: 0.7; }
+
+.daily-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 2px solid var(--text-color, #000);
+}
+
+.summary-item { display: flex; align-items: center; gap: 8px; }
+.summary-label { font-weight: var(--fw-strong, 700); }
+.summary-temp { font-weight: var(--fw-regular, 600); }
+.summary-icon { width: 34px; height: 34px; }
+.summary-cond { font-weight: var(--fw-regular, 500); opacity: 0.85; }

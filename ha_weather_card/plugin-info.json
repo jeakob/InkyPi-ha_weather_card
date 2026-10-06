@@ -1,0 +1,6 @@
+{
+    "display_name": "HA Weather Card",
+    "id": "ha_weather_card",
+    "class": "HAWeatherCard",
+    "repository": "https://github.com/jeakob/InkyPi-ha_weather_card"
+}
